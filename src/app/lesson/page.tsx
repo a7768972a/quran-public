@@ -110,12 +110,12 @@ function LessonPageContent() {
   // إيجاد درس اليوم المختار + صوره
   const selectedLesson = useMemo(() => {
     if (!lessons || !day) return null;
-    const ws = getWeekStart(weekStart);
+    const ws = toDateInputValue(weekStart);
     return (
       lessons.find(
         (l) =>
           l.lessonDay === day &&
-          new Date(l.weekStart).getTime() === ws.getTime()
+          toDateInputValue(l.weekStart) === ws
       ) ?? null
     );
   }, [lessons, day, weekStart]);
