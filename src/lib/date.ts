@@ -52,3 +52,13 @@ export function getDayName(dayValue: string): string {
   if (dayValue === "tuesday") return "الثلاثاء";
   return dayValue;
 }
+
+// حساب تاريخ اليوم المختار (سبت أو ثلاثاء) ضمن أسبوع معين
+export function getLessonDate(weekStart: string | Date, lessonDay: string): Date {
+  const base = new Date(weekStart);
+  base.setHours(0, 0, 0, 0);
+  if (lessonDay === "tuesday") {
+    base.setDate(base.getDate() + 3);
+  }
+  return base;
+}

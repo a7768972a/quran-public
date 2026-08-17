@@ -29,6 +29,7 @@ import {
   addDays,
   formatDateAr,
   toDateInputValue,
+  getLessonDate,
 } from "@/lib/date";
 import { LESSON_DAYS, getLessonDayLabel } from "@/lib/constants";
 import type { Lesson, LessonImage, LessonDay } from "@/types";
@@ -210,9 +211,11 @@ function LessonPageContent() {
               </Button>
 
               <div className="text-center flex-1 min-w-0">
-                <div className="text-[11px] text-muted-foreground mb-0.5">أسبوع</div>
+                <div className="text-[11px] text-muted-foreground mb-0.5">
+                  {day ? getLessonDayLabel(day) : "أسبوع"}
+                </div>
                 <div className="text-sm sm:text-base font-bold text-foreground truncate">
-                  {formatDateAr(weekStart)}
+                  {day ? formatDateAr(getLessonDate(weekStart, day)) : formatDateAr(weekStart)}
                 </div>
               </div>
 
@@ -309,7 +312,7 @@ function LessonPageContent() {
                   لم يتم رفع درس لهذا اليوم بعد
                 </p>
                 <p className="text-xs text-muted-foreground max-w-xs">
-                  لا يوجد درس لـ{day ? getLessonDayLabel(day) : ""} في أسبوع {formatDateAr(weekStart)}
+                  لا يوجد درس لـ{day ? getLessonDayLabel(day) : ""} في {day ? formatDateAr(getLessonDate(weekStart, day)) : formatDateAr(weekStart)}
                 </p>
               </CardContent>
             </Card>
