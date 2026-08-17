@@ -155,31 +155,35 @@ export default function HomePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {filtered.map((s) => (
             <Link key={s.id} href={`/student/${s.id}`} className="block group">
-              <Card className="hover:shadow-md hover:border-primary/30 transition-all h-full">
-                <CardContent className="p-4 flex items-start gap-3">
-                  <div className="grid place-items-center size-11 shrink-0 rounded-xl bg-secondary/30 text-secondary-foreground">
-                    <span className="text-lg font-bold">
+              <Card className="hover:shadow-lg hover:border-primary/40 transition-all h-full overflow-hidden relative">
+                {/* شريط جانبي ملون حسب يوم الدرس */}
+                <div className={`absolute top-0 right-0 bottom-0 w-1.5 ${s.lessonDay === "saturday" ? "bg-[#054239]" : "bg-[#428177]"}`} />
+                <CardContent className="p-4 pr-5 flex items-center gap-3">
+                  {/* الأفتار مع لون يوم الدرس */}
+                  <div className={`grid place-items-center size-12 shrink-0 rounded-2xl text-white shadow-sm ${s.lessonDay === "saturday" ? "bg-[#054239]" : "bg-[#428177]"}`}>
+                    <span className="text-lg font-extrabold">
                       {s.name.charAt(0)}
                     </span>
                   </div>
+                  {/* المعلومات */}
                   <div className="flex-1 min-w-0">
                     <h4 className="font-bold text-foreground truncate group-hover:text-primary transition-colors">
                       {s.name}
                     </h4>
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-muted-foreground">
-                      <span className="inline-flex items-center gap-1">
-                        <CalendarDays className="size-3" />
+                    <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                        <CalendarDays className="size-2.5" />
                         {getLessonDayLabel(s.lessonDay)}
                       </span>
-                      <span>العمر: {s.age}</span>
+                      <span className="inline-flex items-center rounded-md bg-muted/60 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                        {s.age} سنة
+                      </span>
                     </div>
                   </div>
-                  <div className="flex flex-col items-center justify-center shrink-0 rounded-lg bg-primary/5 px-2.5 py-1.5 border border-primary/10">
-                    <Star
-                      className="size-4 text-primary"
-                      fill="currentColor"
-                    />
-                    <span className="text-xs font-bold text-primary mt-0.5 nums">
+                  {/* النقاط — دائرة واضحة */}
+                  <div className="flex flex-col items-center justify-center shrink-0 size-12 rounded-full bg-[#b9a779]/15 border-2 border-[#b9a779]/40">
+                    <Star className="size-3.5 text-[#6b5d3a]" fill="currentColor" />
+                    <span className="text-xs font-extrabold text-[#6b5d3a] mt-0.5 nums leading-none">
                       {s.points}
                     </span>
                   </div>
