@@ -128,7 +128,7 @@ function LessonPageContent() {
       <DayPickerDialog
         open={dayPickerOpen}
         onOpenChange={(o) => {
-          if (!o && day) setDayPickerOpen(false);
+          if (!o) setDayPickerOpen(false);
         }}
         selectedDay={day}
         onSelect={selectDay}
