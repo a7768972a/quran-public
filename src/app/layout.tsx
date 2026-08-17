@@ -34,6 +34,11 @@ const hayyakum = localFont({
 export const metadata: Metadata = {
   title: "حلقة جامع الخضر - متابعة الطلاب",
   description: "متابعة طلاب حلقة جامع الخضر - الحفظ والدرجة والوظيفة والنقاط وصور الدروس",
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
 };
 
 export default function RootLayout({

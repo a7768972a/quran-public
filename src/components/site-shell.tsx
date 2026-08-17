@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GraduationCap, Heart, Github, Home as HomeIcon } from "lucide-react";
+import { Heart, Github, Home as HomeIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SiteShellProps {
@@ -24,8 +24,8 @@ export function SiteShell({
             href="/"
             className="flex items-center gap-3 transition-opacity hover:opacity-90"
           >
-            <div className="grid place-items-center size-10 sm:size-11 rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
-              <GraduationCap className="size-5 sm:size-6" />
+            <div className="grid place-items-center size-10 sm:size-11 rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 overflow-hidden">
+              <img src="/logo.svg" alt="شعار حلقة جامع الخضر" className="size-7 sm:size-8" />
             </div>
             <div>
               <h1 className="text-base sm:text-lg font-extrabold leading-tight">
