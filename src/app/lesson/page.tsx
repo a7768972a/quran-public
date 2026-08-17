@@ -142,13 +142,43 @@ function LessonPageContent() {
           دروس الأسبوع
         </h2>
         <p className="text-sm text-muted-foreground mt-1.5">
-          صور دروس السبت والثلاثاء لهذا الأسبوع
+          اختر يوم الدرس أولاً، ثم تنقّل بين الأسابيع
         </p>
       </div>
 
-      {/* التنقل الأسبوعي */}
+      {/* اختيار اليوم — في الأعلى ليختاره الطالب أولاً */}
       <Card className="mb-5 border-primary/20 bg-card">
         <CardContent className="p-3 sm:p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <CalendarDays className="size-4 text-primary" />
+            <span className="text-sm font-bold text-foreground">١. اختر يوم الدرس</span>
+          </div>
+          <RadioGroup
+            value={day}
+            onValueChange={(v) => updateDay(v as LessonDay)}
+            className="grid grid-cols-2 gap-2 sm:gap-3"
+          >
+            {LESSON_DAYS.map((d) => (
+              <Label
+                key={d.value}
+                htmlFor={`day-${d.value}`}
+                className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-3 py-3 cursor-pointer hover:bg-accent/30 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:text-primary"
+              >
+                <RadioGroupItem id={`day-${d.value}`} value={d.value} />
+                <span className="text-sm sm:text-base font-bold">{d.label}</span>
+              </Label>
+            ))}
+          </RadioGroup>
+        </CardContent>
+      </Card>
+
+      {/* التنقل الأسبوعي — بعد اختيار اليوم */}
+      <Card className="mb-5 border-primary/20 bg-card">
+        <CardContent className="p-3 sm:p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <CalendarDays className="size-4 text-primary" />
+            <span className="text-sm font-bold text-foreground">٢. اختر الأسبوع</span>
+          </div>
           <div className="flex items-center justify-between gap-2">
             <Button
               variant="outline"
@@ -202,32 +232,6 @@ function LessonPageContent() {
               className="h-9 text-sm nums"
             />
           </div>
-        </CardContent>
-      </Card>
-
-      {/* اختيار اليوم */}
-      <Card className="mb-5">
-        <CardContent className="p-3 sm:p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <CalendarDays className="size-4 text-primary" />
-            <span className="text-sm font-bold text-foreground">اختر اليوم</span>
-          </div>
-          <RadioGroup
-            value={day}
-            onValueChange={(v) => updateDay(v as LessonDay)}
-            className="grid grid-cols-2 gap-2 sm:gap-3"
-          >
-            {LESSON_DAYS.map((d) => (
-              <Label
-                key={d.value}
-                htmlFor={`day-${d.value}`}
-                className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-3 py-3 cursor-pointer hover:bg-accent/30 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:text-primary"
-              >
-                <RadioGroupItem id={`day-${d.value}`} value={d.value} />
-                <span className="text-sm sm:text-base font-bold">{d.label}</span>
-              </Label>
-            ))}
-          </RadioGroup>
         </CardContent>
       </Card>
 
