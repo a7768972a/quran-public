@@ -1,0 +1,54 @@
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import "./globals.css";
+import { Toaster as SonnerToaster } from "@/components/ui/sonner";
+
+// ✅ خط HayyakumAllah محلياً (4 أوزان)
+const hayyakum = localFont({
+  src: [
+    {
+      path: "../fonts/HayyakumAllah-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../fonts/HayyakumAllah-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/HayyakumAllah-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../fonts/HayyakumAllah-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-hayyakum",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "حلقة جامع الخضر - متابعة الطلاب",
+  description: "متابعة طلاب حلقة جامع الخضر - الحفظ والدرجة والوظيفة والنقاط وصور الدروس",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
+      <body
+        className={`${hayyakum.variable} font-sans antialiased bg-background text-foreground`}
+      >
+        {children}
+        <SonnerToaster position="top-center" richColors />
+      </body>
+    </html>
+  );
+}

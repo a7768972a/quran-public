@@ -1,0 +1,214 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-hayyakum), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.75rem;
+
+  /* ===== لوحة الألوان ===== */
+  /* Forest  (أساسي - أخضر قرآني عميق): #002623 / #054239 / #428177 */
+  /* Golden Wheat (ثانوي - ذهبي دافئ):   #988561 / #b9a779 / #edebe0  */
+  /* Charcoal (نصوص وتباين):              #161616 / #3d3a3b / #ffffff   */
+
+  /* الخلفية: كريمي دافئ (#edebe0) */
+  --background: oklch(0.935 0.014 90);
+  /* النص: فحمي (#161616) */
+  --foreground: oklch(0.2 0.003 90);
+
+  /* البطاقات: أبيض نقي (#ffffff) فوق الخلفية الكريمية */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.003 90);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.003 90);
+
+  /* الأساسي: أخضر الغابة العميق (#054239) */
+  --primary: oklch(0.36 0.06 185);
+  --primary-foreground: oklch(0.935 0.014 90);
+
+  /* الثانوي: قمح ذهبي (#b9a779) */
+  --secondary: oklch(0.78 0.058 85);
+  --secondary-foreground: oklch(0.22 0.04 190);
+
+  /* الخافت: كريمي أفتح */
+  --muted: oklch(0.9 0.012 90);
+  --muted-foreground: oklch(0.45 0.01 85);
+
+  /* المميِّز: سيرج أخضر مطفأ (#428177) */
+  --accent: oklch(0.62 0.055 180);
+  --accent-foreground: oklch(0.99 0.005 90);
+
+  /* التحذير/الخطر: أحمر قرميدي */
+  --destructive: oklch(0.55 0.18 30);
+
+  /* الحدود: بيج خفيف */
+  --border: oklch(0.86 0.018 85);
+  --input: oklch(0.88 0.015 85);
+  --ring: oklch(0.36 0.06 185);
+
+  /* الرسوم البيانية - من اللوحات الثلاث */
+  --chart-1: oklch(0.36 0.06 185);   /* Forest deep #054239 */
+  --chart-2: oklch(0.62 0.055 180);  /* Sage #428177 */
+  --chart-3: oklch(0.78 0.058 85);   /* Wheat #b9a779 */
+  --chart-4: oklch(0.62 0.06 85);     /* Olive #988561 */
+  --chart-5: oklch(0.22 0.04 190);   /* Dark forest #002623 */
+
+  /* الشريط الجانبي */
+  --sidebar: oklch(0.945 0.01 90);
+  --sidebar-foreground: oklch(0.2 0.003 90);
+  --sidebar-primary: oklch(0.36 0.06 185);
+  --sidebar-primary-foreground: oklch(0.935 0.014 90);
+  --sidebar-accent: oklch(0.9 0.012 90);
+  --sidebar-accent-foreground: oklch(0.22 0.04 190);
+  --sidebar-border: oklch(0.86 0.018 85);
+  --sidebar-ring: oklch(0.36 0.06 185);
+}
+
+.dark {
+  /* الوضع الليلي - مبني على Charcoal #161616 + لمسات Forest */
+  --background: oklch(0.18 0.003 90);   /* قريب من #161616 */
+  --foreground: oklch(0.93 0.014 90);   /* كريمي فاتح */
+  --card: oklch(0.24 0.005 90);         /* #3d3a3b */
+  --card-foreground: oklch(0.93 0.014 90);
+  --popover: oklch(0.24 0.005 90);
+  --popover-foreground: oklch(0.93 0.014 90);
+  --primary: oklch(0.62 0.055 180);      /* Sage في الليلي */
+  --primary-foreground: oklch(0.18 0.003 90);
+  --secondary: oklch(0.62 0.06 85);      /* Olive */
+  --secondary-foreground: oklch(0.93 0.014 90);
+  --muted: oklch(0.28 0.005 90);
+  --muted-foreground: oklch(0.65 0.01 85);
+  --accent: oklch(0.4 0.06 185);         /* Forest deep */
+  --accent-foreground: oklch(0.93 0.014 90);
+  --destructive: oklch(0.6 0.19 25);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.62 0.055 180);
+  --chart-1: oklch(0.62 0.055 180);
+  --chart-2: oklch(0.78 0.058 85);
+  --chart-3: oklch(0.62 0.06 85);
+  --chart-4: oklch(0.45 0.08 185);
+  --chart-5: oklch(0.7 0.05 85);
+  --sidebar: oklch(0.22 0.005 90);
+  --sidebar-foreground: oklch(0.93 0.014 90);
+  --sidebar-primary: oklch(0.62 0.055 180);
+  --sidebar-primary-foreground: oklch(0.18 0.003 90);
+  --sidebar-accent: oklch(0.28 0.005 90);
+  --sidebar-accent-foreground: oklch(0.93 0.014 90);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.62 0.055 180);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* شريط التمرير المخصص */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.85 0.03 150);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.7 0.06 152);
+  background-clip: padding-box;
+}
+
+/* تحسين طفيف للأرقام والتنسيق العربي */
+.nums {
+  font-feature-settings: "tnum";
+}
+
+/* ===== تنسيقات الطباعة ===== */
+@media print {
+  /* إخفاء العناصر غير المرغوبة عند الطباعة */
+  header,
+  footer,
+  [role="tablist"],
+  .no-print {
+    display: none !important;
+  }
+
+  /* إعادة ضبط الخلفيات والألوان للطباعة */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* إظهار المحتوى كاملاً */
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  /* تجنب قطع البطاقات بين الصفحات */
+  .print-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+
+  /* تكبير الخط قليلاً للطباعة */
+  .print-content {
+    font-size: 12pt;
+  }
+
+  /* إظهار روابط GitHub كاملة */
+  a[href]:after {
+    content: "";
+  }
+}

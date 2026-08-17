@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// أيام الدرس: سبت (saturday) / ثلاثاء (tuesday)
+model Student {
+  id        String   @id @default(cuid())
+  name      String
+  age       Int
+  lessonDay String
+  points    Int      @default(0)   // رصيد النقاط
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  records Record[]
+}
+
+model Record {
+  id           String   @id @default(cuid())
+  studentId    String
+  memorization String
+  grade        String
+  homework     String
+  date         DateTime
+  createdAt    DateTime @default(now())
+
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([date])
+  @@index([studentId])
+}
+
+// درس أسبوعي (صورة) - مربوط بيوم الدرس والأسبوع
+model Lesson {
+  id        String   @id @default(cuid())
+  lessonDay String   // "saturday" أو "tuesday"
+  weekStart DateTime // بداية الأسبوع (السبت)
+  imageUrl  String   // رابط الصورة من Supabase Storage
+  createdAt DateTime @default(now())
+
+  @@unique([lessonDay, weekStart]) // درس واحد لكل يوم في الأسبوع
+  @@index([weekStart])
+}
