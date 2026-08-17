@@ -94,25 +94,28 @@ function StudentDetailContent() {
   // تاريخ الدرس لهذا الأسبوع حسب يوم الطالب
   const lessonDate = useMemo(() => {
     if (!student) return null;
-    // السبت = weekStart (0 أيام)، الثلاثاء = weekStart + 3 أيام
     const offset = student.lessonDay === "saturday" ? 0 : 3;
     return addDays(weekStart, offset);
   }, [student, weekStart]);
 
-  // إيجاد سجل الأسبوع المطابق
-  const weekRecord = useMemo(() => {
-    if (!student || !lessonDate) return null;
-    const start = new Date(lessonDate);
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(lessonDate);
-    end.setHours(23, 59, 59, 999);
-    return (
-      student.records.find((r) => {
-        const d = new Date(r.date);
-        return d >= start && d <= end;
-      }) ?? null
-    );
-  }, [student, lessonDate]);
+  // جميع سجلات هذا الأسبوع (من السبت إلى الجمعة)
+  const weekRecords = useMemo(() => {
+    if (!student) return [];
+    const weekEnd = addDays(weekStart, 7); // نهاية الأسبوع
+    const startStr = toDateInputValue(weekStart);
+    const endStr = toDateInputValue(weekEnd);
+
+    // فلترة السجلات ضمن نطاق الأسبوع باستخدام toDateInputValue (تجنب مشاكل timezone)
+    return student.records
+      .filter((r) => {
+        const recordDateStr = toDateInputValue(r.date);
+        return recordDateStr >= startStr && recordDateStr < endStr;
+      })
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // الأحدث أولاً
+  }, [student, weekStart]);
+
+  // آخر سجل في الأسبوع (للعرض الرئيسي)
+  const weekRecord = weekRecords[0] ?? null;
 
   // حالة معرّف مفقود
   if (!id) {
@@ -264,71 +267,89 @@ function StudentDetailContent() {
             </CardContent>
           </Card>
 
-          {/* بطاقة سجل الأسبوع */}
-          <div className="mb-3 flex items-center gap-2 px-1">
-            <BookOpen className="size-4 text-primary" />
-            <h3 className="text-sm sm:text-base font-bold text-foreground">
-              درس {getLessonDayLabel(student.lessonDay)} هذا الأسبوع
-            </h3>
+          {/* عنوان قسم سجل الأسبوع */}
+          <div className="mb-3 flex items-center justify-between gap-2 px-1">
+            <div className="flex items-center gap-2">
+              <BookOpen className="size-4 text-primary" />
+              <h3 className="text-sm sm:text-base font-bold text-foreground">
+                نشاط هذا الأسبوع
+              </h3>
+            </div>
+            {weekRecords.length > 0 && (
+              <Badge variant="secondary" className="text-[11px]">
+                {weekRecords.length} {weekRecords.length === 1 ? "سجل" : "سجلات"}
+              </Badge>
+            )}
           </div>
 
-          {lessonDate && (
-            <div className="text-xs text-muted-foreground mb-3 px-1">
-              تاريخ الدرس: {formatDateAr(lessonDate)}
+          {weekRecords.length > 0 ? (
+            <div className="space-y-3">
+              {weekRecords.map((record, idx) => (
+                <Card key={record.id} className={idx === 0 ? "border-primary/30" : ""}>
+                  <CardContent className="p-4 sm:p-5 space-y-4">
+                    {/* تاريخ السجل (لو فيه أكثر من سجل) */}
+                    {weekRecords.length > 1 && (
+                      <div className="flex items-center justify-between gap-2 pb-2 border-b border-border/40">
+                        <div className="text-[11px] text-muted-foreground flex items-center gap-1">
+                          <CalendarDays className="size-3" />
+                          {formatDateAr(record.date)}
+                        </div>
+                        {idx === 0 && (
+                          <Badge variant="outline" className="text-[10px] bg-primary/5 text-primary border-primary/30">
+                            الأحدث
+                          </Badge>
+                        )}
+                      </div>
+                    )}
+
+                    {/* الحفظ */}
+                    <div className="flex items-start gap-3">
+                      <div className="grid place-items-center size-9 shrink-0 rounded-lg bg-secondary/30 text-secondary-foreground">
+                        <BookMarked className="size-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs text-muted-foreground mb-0.5">
+                          الإنجاز (الحفظ)
+                        </div>
+                        <div className="text-sm font-medium text-foreground break-words">
+                          {record.memorization || "—"}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* الدرجة */}
+                    <div className="flex items-start gap-3">
+                      <div className="grid place-items-center size-9 shrink-0 rounded-lg bg-secondary/30 text-secondary-foreground">
+                        <Award className="size-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs text-muted-foreground mb-1">
+                          الدرجة
+                        </div>
+                        <Badge className={`border ${getGradeColor(record.grade)}`}>
+                          {record.grade}
+                        </Badge>
+                      </div>
+                    </div>
+
+                    {/* الوظيفة */}
+                    <div className="flex items-start gap-3">
+                      <div className="grid place-items-center size-9 shrink-0 rounded-lg bg-secondary/30 text-secondary-foreground">
+                        <NotebookPen className="size-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs text-muted-foreground mb-0.5">
+                          الوظيفة
+                        </div>
+                        <div className="text-sm font-medium text-foreground break-words">
+                          {record.homework || "—"}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-          )}
-
-          {weekRecord ? (
-            <Card>
-              <CardContent className="p-4 sm:p-5 space-y-4">
-                {/* الحفظ */}
-                <div className="flex items-start gap-3">
-                  <div className="grid place-items-center size-9 shrink-0 rounded-lg bg-secondary/30 text-secondary-foreground">
-                    <BookMarked className="size-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs text-muted-foreground mb-0.5">
-                      الحفظ
-                    </div>
-                    <div className="text-sm font-medium text-foreground break-words">
-                      {weekRecord.memorization || "—"}
-                    </div>
-                  </div>
-                </div>
-
-                {/* الدرجة */}
-                <div className="flex items-start gap-3">
-                  <div className="grid place-items-center size-9 shrink-0 rounded-lg bg-secondary/30 text-secondary-foreground">
-                    <Award className="size-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs text-muted-foreground mb-1">
-                      الدرجة
-                    </div>
-                    <Badge
-                      className={`border ${getGradeColor(weekRecord.grade)}`}
-                    >
-                      {weekRecord.grade}
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* الوظيفة */}
-                <div className="flex items-start gap-3">
-                  <div className="grid place-items-center size-9 shrink-0 rounded-lg bg-secondary/30 text-secondary-foreground">
-                    <NotebookPen className="size-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs text-muted-foreground mb-0.5">
-                      الوظيفة
-                    </div>
-                    <div className="text-sm font-medium text-foreground break-words">
-                      {weekRecord.homework || "—"}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           ) : (
             <Card className="border-dashed">
               <CardContent className="flex flex-col items-center justify-center gap-2 p-8 text-center">
@@ -336,10 +357,10 @@ function StudentDetailContent() {
                   <ClipboardList className="size-6 text-muted-foreground" />
                 </div>
                 <p className="text-sm font-medium text-foreground">
-                  لا يوجد درس مسجّل لهذا الأسبوع
+                  لا يوجد نشاط مسجّل لهذا الأسبوع
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  لم يتم تسجيل حفظ للطالب في {getLessonDayLabel(student.lessonDay)} هذا الأسبوع
+                  لم يتم تسجيل حفظ للطالب في هذا الأسبوع
                 </p>
               </CardContent>
             </Card>
