@@ -8,7 +8,6 @@ import {
   Users,
   BookOpen,
   ChevronLeft,
-  Sparkles,
   CalendarDays,
   AlertCircle,
 } from "lucide-react";
@@ -53,10 +52,6 @@ export default function HomePage() {
     <SiteShell>
       {/* الهيرو */}
       <section className="text-center pt-4 pb-8 sm:pt-8 sm:pb-10">
-        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs text-primary mb-4">
-          <Sparkles className="size-3.5" />
-          منصة متابعة أولياء الأمور
-        </div>
         <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground">
           حلقة جامع الخضر
         </h2>
