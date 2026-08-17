@@ -38,14 +38,28 @@ model Record {
   @@index([studentId])
 }
 
-// درس أسبوعي (صورة) - مربوط بيوم الدرس والأسبوع
+// درس أسبوعي - يمكن أن يحتوي على عدة صور مع نصوص توضيحية
 model Lesson {
+  id        String        @id @default(cuid())
+  lessonDay String        // "saturday" أو "tuesday"
+  weekStart DateTime      // بداية الأسبوع (السبت)
+  createdAt DateTime      @default(now())
+  images   LessonImage[]
+
+  @@unique([lessonDay, weekStart])
+  @@index([weekStart])
+}
+
+// صورة واحدة من درس - مع نص توضيحي اختياري
+model LessonImage {
   id        String   @id @default(cuid())
-  lessonDay String   // "saturday" أو "tuesday"
-  weekStart DateTime // بداية الأسبوع (السبت)
-  imageUrl  String   // رابط الصورة من Supabase Storage
+  lessonId  String
+  imageUrl  String
+  caption   String?  // نص توضيحي اختياري
+  order     Int      @default(0)
   createdAt DateTime @default(now())
 
-  @@unique([lessonDay, weekStart]) // درس واحد لكل يوم في الأسبوع
-  @@index([weekStart])
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@index([lessonId])
 }

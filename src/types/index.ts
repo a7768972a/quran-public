@@ -29,10 +29,20 @@ export interface RecordItem {
   createdAt: string;
 }
 
+export interface LessonImage {
+  id: string;
+  lessonId: string;
+  imageUrl: string;
+  caption: string | null;
+  order: number;
+  createdAt: string;
+}
+
 export interface Lesson {
   id: string;
   lessonDay: LessonDay;
   weekStart: string;
-  imageUrl: string;
+  imageUrl?: string; // للتوافق مع البيانات القديمة
   createdAt: string;
+  images?: LessonImage[];
 }

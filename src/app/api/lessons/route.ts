@@ -17,6 +17,11 @@ export async function GET(req: NextRequest) {
     const lessons = await db.lesson.findMany({
       where,
       orderBy: { weekStart: "desc" },
+      include: {
+        images: {
+          orderBy: { order: "asc" },
+        },
+      },
     });
 
     return NextResponse.json(lessons);
